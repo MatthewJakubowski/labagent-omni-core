@@ -20,6 +20,17 @@ st.markdown("""
         padding: 14px;
         margin-bottom: 12px;
     }
+    .legal-box {
+        background: rgba(15, 23, 42, 0.7);
+        border: 1px solid #334155;
+        border-left: 4px solid #38bdf8;
+        padding: 16px;
+        border-radius: 6px;
+        font-size: 11px;
+        color: #94a3b8;
+        line-height: 1.6;
+        margin-top: 30px;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -36,7 +47,10 @@ scenario = st.sidebar.selectbox(
     ]
 )
 
-view_mode = st.sidebar.radio("Tryb prezentacji wyników:", ["Dynamiczny Paszport Narządowy", "Kliniczny Raport Lekarski (SBAR)", "Eksport HL7 FHIR R4 Bundle"])
+view_mode = st.sidebar.radio(
+    "Tryb prezentacji wyników:",
+    ["Dynamiczny Paszport Narządowy", "Kliniczny Raport Lekarski (SBAR)", "Eksport HL7 FHIR R4 Bundle", "Certyfikat Zgodności & Nadzór Prawny"]
+)
 
 # Mocki pacjenta
 pt_info = {
@@ -93,7 +107,7 @@ else:
 st.divider()
 
 if not pre["passed"]:
-    st.warning("Dalsza interpretacja narządowa została zablokowana zgodnie z rygorem ISO 15189. Wymagane ponowne pobranie próbki.")
+    st.warning("Dalsza interpretacja narządowa została zablokowana zgodnie z rygorem ISO 15189:2023. Wymagane ponowne pobranie próbki.")
 else:
     if view_mode == "Dynamiczny Paszport Narządowy":
         st.subheader("Wielowymiarowy Paszport Narządowy (20 Osi)")
@@ -127,5 +141,30 @@ else:
         fhir_res = FullFHIRBundleExporter.export(audit)
         st.json(fhir_res)
 
+    elif view_mode == "Certyfikat Zgodności & Nadzór Prawny":
+        st.subheader("Formalne Ramy Prawne, Certyfikacja & Nadzór Regulacyjny")
+        st.markdown("""
+        ### Status Badawczy & Klasyfikacja Systemu (Proof-of-Concept)
+        Niniejsza platforma (`LabAgent-Omni Core`) stanowi eksperymentalne środowisko badawczo-rozwojowe (**Proof-of-Concept**) dedykowane deterministycznej autowalizacji regułowej oraz biostatystyce laboratoryjnej.
+
+        #### Zgodność z Polskim i Europejskim Porządkiem Prawnym:
+        1. **Ustawa z dnia 15 września 2022 r. o medycynie laboratoryjnej (Dz.U. 2022 poz. 2280):** 
+           System nie zastępuje czynności diagnostyki laboratoryjnej ani autoryzacji wyniku. Zgodnie z art. 5 i art. 27 ustawy, prawo do autoryzacji wyniku badania laboratoryjnego oraz sprawowania merytorycznego nadzoru przysługuje wyłącznie uprawnionemu **diagnoście laboratoryjnemu**.
+        2. **Ustawa z dnia 5 grudnia 1996 r. o zawodach lekarza i lekarza dentysty:**
+           Wszelkie zestawienia, wskaźniki korelacyjne i raporty formatu SBAR generowane przez silnik mają charakter pomocniczy (Clinical Decision Support). Ostateczna decyzja terapeutyczna, rozpoznanie kliniczne i wdrożenie leczenia należą do **lekarza prowadzącego**.
+        3. **Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2024/1689 (EU AI Act):**
+           System zaprojektowano zgodnie z zasadami **Human-in-the-loop (HITL)**, pełnej wyjaśnialności (Explainable AI - XAI), rygorystycznego zarządzania ryzykiem oraz bezwzględnego zakazu autonomicznego podejmowania decyzji klinicznych bez weryfikacji przez człowieka.
+        4. **Standardy Badań Klinicznych ICH GCP (Good Clinical Practice) & ISO 15189:2023:**
+           Architektura silnika zapewnia audytowalność każdej reguły logicznej, nienaruszalność danych (data integrity) oraz deterministyczną weryfikację błędów fazy przedanalitycznej.
+        """)
+
+# Żelazny Disclaimer na dole każdej strony
+st.markdown("""
+<div class="legal-box">
+    <strong>⚖️ ŻELAZNA KLAUZULA PRAWNA & REGULATORY COMPLIANCE SHIELD:</strong><br>
+    System <em>LabAgent-Omni</em> jest oprogramowaniem prototypowym typu <strong>Proof-of-Concept (PoC)</strong> o charakterze naukowo-badawczym. Narzędzie <strong>NIE JEST</strong> wyrobem medycznym w rozumieniu Rozporządzenia Parlamentu Europejskiego i Rady (UE) 2017/746 (IVDR) ani Rozporządzenia (UE) 2017/745 (MDR) i nie służy do samodzielnego stawiania diagnozy medycznej. Zgodnie z <em>Ustawą o medycynie laboratoryjnej</em> wyłączną odpowiedzialność za autoryzację wyników ponosi <strong>uprawniony diagnosta laboratoryjny</strong>, a ostateczne decyzje diagnostyczno-terapeutyczne podejmuje wyłącznie <strong>lekarz prowadzący</strong> na podstawie pełnego obrazu klinicznego pacjenta. System spełnia wymogi nadzoru ludzkiego (Human-in-the-loop) zgodnie z <em>EU AI Act</em> oraz standardami <em>ICH GCP</em>.
+</div>
+""", unsafe_allow_html=True)
+
 st.sidebar.divider()
-st.sidebar.caption("Zero-Data Retention Architecture • ISO 15189:2023")
+st.sidebar.caption("Zero-Data Retention Architecture • ISO 15189:2023 • EU AI Act HITL")
