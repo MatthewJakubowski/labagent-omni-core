@@ -175,9 +175,6 @@ TRANSLATIONS = {
     }
 }
 
-# -------------------------------------------------------------
-# 2. MAPOWANIE NAZW DLA JĘZYKA ANGIELSKIEGO
-# -------------------------------------------------------------
 EN_AXIS_MAP = {
     "Oś Hematologiczna & Retikulocyty": "Hematology & Reticulocyte Axis",
     "Oś Równowagi Kwasowo-Zasadowej & Mleczany": "Acid-Base Balance & Lactate",
@@ -207,6 +204,33 @@ EN_STATUS_MAP = {
 }
 
 # -------------------------------------------------------------
+# 2. DEFINICJE BAZOWE SCENARIUSZY
+# -------------------------------------------------------------
+def get_scenario_data(idx: int) -> dict:
+    base = {
+        "K_POTASSIUM": 4.4, "CA_CALCIUM": 2.38, "H_INDEX": 0.04,
+        "WBC": 5.8, "HGB": 15.6, "MCV": 88.4, "RDW_CV": 12.1, "PLT": 242.0, "RET_PCT": 1.21, "RET_HE": 33.5, "ESR": 6.0,
+        "BLOOD_PH": 7.41, "PCO2": 39.5, "PO2": 94.0, "LACTATE": 1.1,
+        "GLUCOSE": 92.0, "INSULIN": 10.4, "HBA1C": 5.2, "C_PEPTIDE": 1.82,
+        "CHOL_TOTAL": 188.0, "HDL": 55.0, "TRIGLYCERIDES": 162.0, "APOB": 84.0, "LPA": 14.0,
+        "HS_TROPONIN": 4.2, "NT_PROBNP": 48.0, "D_DIMER": 280.0, "INR": 1.02, "ANTITHROMBIN_III": 104.0,
+        "ALT": 46.0, "AST": 27.0, "ALP": 56.0, "GGTP": 24.0,
+        "CREATININE": 0.94, "CYSTATIN_C": 0.82, "UREA": 32.0, "URIC_ACID": 6.4, "IRON": 112.0,
+        "FERRITIN": 145.0, "HS_CRP": 0.48, "HOMOCYSTEINE": 8.4, "TSH": 2.05, "FT4": 1.22, "FT3": 3.25,
+        "ANTI_TPO": 10.4, "TRAB": 0.45, "ANTI_CCP": 1.8, "TESTOSTERONE": 640.0, "SHBG": 35.0,
+        "VIT_D3": 46.5, "PSA_TOTAL": 0.78, "CA125": 12.1
+    }
+    if idx == 1:
+        base["K_POTASSIUM"] = 8.4
+        base["CA_CALCIUM"] = 0.78
+        base["H_INDEX"] = 0.04
+    elif idx == 2:
+        base["K_POTASSIUM"] = 4.4
+        base["CA_CALCIUM"] = 2.38
+        base["H_INDEX"] = 0.68
+    return base
+
+# -------------------------------------------------------------
 # 3. PANEL BOCZNY (KONTROLA & LINK)
 # -------------------------------------------------------------
 lang = st.sidebar.radio("🌐 Language / Język", ["PL", "EN"], horizontal=True)
@@ -214,11 +238,13 @@ T = TRANSLATIONS[lang]
 
 st.sidebar.divider()
 st.sidebar.markdown(f"### {T['title']}")
+
 scenario_idx = st.sidebar.selectbox(
     T["scenario_label"],
     options=[0, 1, 2],
     format_func=lambda i: T["scenarios"][i]
 )
+
 view_idx = st.sidebar.radio(
     T["view_mode_label"],
     options=[0, 1, 2, 3, 4],
@@ -237,30 +263,15 @@ st.sidebar.markdown(f"""
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------------------
-# 4. DANE WEJŚCIOWE
+# 4. DETERMINISTYCZNA KONTROLA STANU
 # -------------------------------------------------------------
-default_labs = {
-    "K_POTASSIUM": 4.4, "CA_CALCIUM": 2.38, "H_INDEX": 0.04,
-    "WBC": 5.8, "HGB": 15.6, "MCV": 88.4, "RDW_CV": 12.1, "PLT": 242.0, "RET_PCT": 1.21, "RET_HE": 33.5, "ESR": 6.0,
-    "BLOOD_PH": 7.41, "PCO2": 39.5, "PO2": 94.0, "LACTATE": 1.1,
-    "GLUCOSE": 92.0, "INSULIN": 10.4, "HBA1C": 5.2, "C_PEPTIDE": 1.82,
-    "CHOL_TOTAL": 188.0, "HDL": 55.0, "TRIGLYCERIDES": 162.0, "APOB": 84.0, "LPA": 14.0,
-    "HS_TROPONIN": 4.2, "NT_PROBNP": 48.0, "D_DIMER": 280.0, "INR": 1.02, "ANTITHROMBIN_III": 104.0,
-    "ALT": 46.0, "AST": 27.0, "ALP": 56.0, "GGTP": 24.0,
-    "CREATININE": 0.94, "CYSTATIN_C": 0.82, "UREA": 32.0, "URIC_ACID": 6.4, "IRON": 112.0,
-    "FERRITIN": 145.0, "HS_CRP": 0.48, "HOMOCYSTEINE": 8.4, "TSH": 2.05, "FT4": 1.22, "FT3": 3.25,
-    "ANTI_TPO": 10.4, "TRAB": 0.45, "ANTI_CCP": 1.8, "TESTOSTERONE": 640.0, "SHBG": 35.0,
-    "VIT_D3": 46.5, "PSA_TOTAL": 0.78, "CA125": 12.1
-}
-
-if scenario_idx == 1:
-    default_labs["K_POTASSIUM"] = 8.4
-    default_labs["CA_CALCIUM"] = 0.78
-elif scenario_idx == 2:
-    default_labs["H_INDEX"] = 0.68
+# Jeśli użytkownik zmienił scenariusz w selectboxie -> przeładuj dane
+if "current_scenario_idx" not in st.session_state or st.session_state.current_scenario_idx != scenario_idx:
+    st.session_state.current_scenario_idx = scenario_idx
+    st.session_state.active_labs = get_scenario_data(scenario_idx)
 
 if "active_labs" not in st.session_state:
-    st.session_state.active_labs = default_labs.copy()
+    st.session_state.active_labs = get_scenario_data(scenario_idx)
 
 # -------------------------------------------------------------
 # 5. WIDOK GŁÓWNY
@@ -299,12 +310,13 @@ if view_idx == 1:
         df_edit,
         use_container_width=True,
         num_rows="fixed",
+        key=f"editor_{scenario_idx}",
         column_config={col_param: st.column_config.TextColumn(disabled=True)}
     )
     for _, row in edited_df.iterrows():
         st.session_state.active_labs[row[col_param]] = row[col_val]
 
-# Bezpieczne wywołanie silnika (zgodne z oryginalną sygnaturą)
+# Wykonanie audytu
 pt_info = {"hash": hashlib.sha256(b"PORTFOLIO-SESSION").hexdigest(), "age": 40, "sex": "M"}
 audit = UltimateClinicalAuditor.execute_god_mode_audit(pt_info, st.session_state.active_labs, {})
 pre = audit["preanalytical"]
