@@ -36,9 +36,25 @@ st.markdown("""
         background: linear-gradient(135deg, #0b1120 0%, #0f172a 100%);
         border: 1px solid #38bdf8;
         border-radius: 10px;
-        padding: 16px;
-        margin-top: 20px;
+        padding: 14px 18px;
+        margin-top: 15px;
         margin-bottom: 20px;
+    }
+    .author-btn {
+        display: inline-block;
+        background: rgba(56, 189, 248, 0.1);
+        border: 1px solid #38bdf8;
+        color: #38bdf8 !important;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+    .author-btn:hover {
+        background: #38bdf8;
+        color: #070a13 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -50,7 +66,6 @@ TRANSLATIONS = {
     "PL": {
         "title": "⚡ LabAgent-Omni Core",
         "subtitle": "Bezstanowy silnik autowalizacji i inteligencji klinicznej (ISO 15189:2023 / HL7 FHIR R4)",
-        "lang_select": "Język / Language",
         "scenario_label": "Wybierz scenariusz bazowy:",
         "scenarios": [
             "Scenariusz A: Profilaktyka & Adaptacja Mięśniowa",
@@ -65,19 +80,37 @@ TRANSLATIONS = {
             "Eksport HL7 FHIR R4 Bundle",
             "Certyfikat Zgodności & Nadzór Prawny"
         ],
-        "pre_ok": "🛡️ STATUS PRZEDANALITYCZNY: Integralność próbki potwierdzona.",
+        "pre_ok": "🛡️ STATUS PRZEDANALITYCZNY:",
         "pre_block": "🚨 KRYTYCZNA BLOKADA PRZEDANALITYCZNA:",
         "pre_warning": "Dalsza interpretacja narządowa zablokowana zgodnie z rygorem ISO 15189:2023. Wymagane ponowne pobranie próbki.",
+        "passport_title": "Dynamiczny Paszport Narządowy (Live)",
+        "sbar_title": "Kliniczny Raport Lekarski (Format SBAR)",
         "sbar_sit": "S (Sytuacja):",
         "sbar_bg": "B (Kontekst):",
         "sbar_ass": "A (Ocena):",
         "sbar_rec": "R (Rekomendacja):",
+        "sbar_sit_text": "Pacjent 40L, płeć M. Kompleksowy panel biochemiczno-hematologiczny.",
+        "sbar_bg_text": "Wykluczono interferencje przedanalityczne (indeksy HIL w normie, brak chelatacji EDTA).",
+        "sbar_rec_text": "Wyniki zweryfikowane deterministycznie. Brak ostrych incydentów martwiczych. Zalecana dalsza obserwacja dynamiki metabolizmu węglowodanowego.",
         "edit_header": "Interaktywna Modyfikacja Wyników Badań (Weryfikacja w locie)",
-        "edit_caption": "Zmień dowolną wartość w tabeli poniżej – silnik zaktualizuje audyt, odcięcia i reguły w czasie rzeczywistym.",
-        "author_tag": "Architektura & Implementacja:",
-        "author_role": "Starszy Technolog Laboratoryjny & Clinical AI Developer",
-        "author_bio": "Projektant systemów automatycznej walidacji laboratoryjnej, koordynator badań klinicznych oraz twórca inicjatywy #FromPipetteToPython.",
-        "legal_title": "Formalne Ramy Prawne, Certyfikacja & Nadzór Regulacyjny",
+        "edit_caption": "Zmień dowolną wartość w tabeli poniżej – silnik natychmiast przeliczy audyt, odcięcia i reguły kliniczne.",
+        "author_tag": "Architektura & Rozwój:",
+        "author_btn_text": "Zobacz profil & dossier ↗",
+        "legal_header": "Formalne Ramy Prawne, Certyfikacja & Nadzór Regulacyjny",
+        "legal_body": """
+        ### Status Badawczy & Klasyfikacja Systemu (Proof-of-Concept)
+        Platforma `LabAgent-Omni Core` stanowi eksperymentalne środowisko badawczo-rozwojowe (**Proof-of-Concept**).
+
+        #### Zgodność z Polskim i Europejskim Porządkiem Prawnym:
+        1. **Ustawa z dnia 15 września 2022 r. o medycynie laboratoryjnej (Dz.U. 2022 poz. 2280):** 
+           System nie dokonuje samodzielnej autoryzacji wyników. Wyłączne prawo do autoryzacji przysługuje uprawnionemu **diagnoście laboratoryjnemu**.
+        2. **Ustawa o zawodach lekarza i lekarza dentysty:**
+           Wszelkie zestawienia i wskaźniki pełnią rolę Clinical Decision Support (CDS). Decyzję terapeutyczną podejmuje wyłącznie **lekarz prowadzący**.
+        3. **Rozporządzenie EU AI Act (2024/1689):**
+           Zasada **Human-in-the-loop (HITL)**, pełna wyjaśnialność (XAI) oraz brak niekontrolowanych decyzji autonomicznych.
+        4. **ICH GCP & PN-EN ISO 15189:2023:**
+           Pełna audytowalność każdej reguły, nienaruszalność danych i deterministyczna weryfikacja błędów przedanalitycznych.
+        """,
         "legal_shield_text": (
             "⚖️ ŻELAZNA KLAUZULA PRAWNA & REGULATORY COMPLIANCE SHIELD: "
             "System LabAgent-Omni jest oprogramowaniem badawczo-rozwojowym typu Proof-of-Concept (PoC). "
@@ -89,7 +122,6 @@ TRANSLATIONS = {
     "EN": {
         "title": "⚡ LabAgent-Omni Core",
         "subtitle": "Stateless Clinical Intelligence & Autovalidation Sidecar (ISO 15189:2023 / HL7 FHIR R4)",
-        "lang_select": "Language / Język",
         "scenario_label": "Select Baseline Scenario:",
         "scenarios": [
             "Scenario A: Wellness & Muscle Adaptation",
@@ -104,19 +136,37 @@ TRANSLATIONS = {
             "HL7 FHIR R4 Bundle Export",
             "Regulatory Compliance & Governance"
         ],
-        "pre_ok": "🛡️ PREANALYTICAL INTEGRITY: Specimen verified.",
+        "pre_ok": "🛡️ PREANALYTICAL STATUS:",
         "pre_block": "🚨 CRITICAL PREANALYTICAL BLOCK:",
         "pre_warning": "Downstream organ interpretation halted pursuant to ISO 15189:2023 criteria. Specimen recollection mandated.",
+        "passport_title": "Dynamic Multi-Organ Passport (Live)",
+        "sbar_title": "Physician Clinical SBAR Brief",
         "sbar_sit": "S (Situation):",
         "sbar_bg": "B (Background):",
         "sbar_ass": "A (Assessment):",
         "sbar_rec": "R (Recommendation):",
+        "sbar_sit_text": "Patient 40y, male. Comprehensive routine biochemical and hematological evaluation.",
+        "sbar_bg_text": "Preanalytical interferences excluded (HIL indices optimal, EDTA cation chelation ruled out).",
+        "sbar_rec_text": "Deterministially verified results. No evidence of acute cell necrosis. Continuous observation of glucose metabolism trajectory advised.",
         "edit_header": "Interactive Lab Value Modification (Real-Time Verification)",
-        "edit_caption": "Modify any biomarker value in the table below – the deterministic engine will immediately re-run autovalidation.",
-        "author_tag": "System Architecture & Engineering:",
-        "author_role": "Senior Medical Laboratory Technologist & Clinical AI Developer",
-        "author_bio": "Designer of clinical autovalidation architectures, former clinical research coordinator, and author of the #FromPipetteToPython initiative.",
-        "legal_title": "Statutory Governance, Certification & Legal Shield",
+        "edit_caption": "Modify any biomarker in the table below – the deterministic engine will immediately re-evaluate autovalidation rules.",
+        "author_tag": "Architecture & Engineering:",
+        "author_btn_text": "Visit Profile & Dossier ↗",
+        "legal_header": "Statutory Governance, Certification & Legal Shield",
+        "legal_body": """
+        ### Research & Proof-of-Concept Status
+        The `LabAgent-Omni Core` platform is an experimental demonstration system (**Proof-of-Concept**).
+
+        #### Regulatory & Legal Alignment:
+        1. **Laboratory Diagnostics Act:** 
+           The system does not perform autonomous authorization of clinical results. Final authorization authority resides strictly with certified **Medical Laboratory Diagnosticians / Clinical Scientists**.
+        2. **Medical Practitioner Regulations:**
+           All multi-axial correlations and summaries serve strictly as Clinical Decision Support (CDS). Final clinical diagnoses and therapy decisions belong exclusively to the **attending licensed physician**.
+        3. **EU AI Act Regulation (2024/1689):**
+           Designed with **Human-in-the-Loop (HITL)** oversight, full Explainable AI (XAI) transparency, and zero uncontrolled autonomous clinical decision-making.
+        4. **ICH GCP & ISO 15189:2023 Quality Norms:**
+           Rigorous rule auditability, zero-data-retention cryptographic integrity, and deterministic preanalytical interference blocking.
+        """,
         "legal_shield_text": (
             "⚖️ REGULATORY COMPLIANCE & LEGAL SHIELD: "
             "The LabAgent-Omni system is an experimental Proof-of-Concept (PoC) platform. "
@@ -128,38 +178,38 @@ TRANSLATIONS = {
 }
 
 # -------------------------------------------------------------
-# 2. PANEL BOCZNY (KONTROLA & WIZYTÓWKA)
+# 2. PANEL BOCZNY (KONTROLA & LINK DO STRONY)
 # -------------------------------------------------------------
 lang = st.sidebar.radio("🌐 Language / Język", ["PL", "EN"], horizontal=True)
 T = TRANSLATIONS[lang]
 
 st.sidebar.divider()
 st.sidebar.markdown(f"### {T['title']}")
-scenario_choice = st.sidebar.selectbox(T["scenario_label"], T["scenarios"])
-view_mode = st.sidebar.radio(T["view_mode_label"], T["views"])
+scenario_idx = st.sidebar.selectbox(
+    T["scenario_label"],
+    options=[0, 1, 2],
+    format_func=lambda i: T["scenarios"][i]
+)
+view_idx = st.sidebar.radio(
+    T["view_mode_label"],
+    options=[0, 1, 2, 3, 4],
+    format_func=lambda i: T["views"][i]
+)
 
-# Wizytówka Twórcy w panelu bocznym
+# Czysta wizytówka w sidebarze odsyłająca na stronę główną
 st.sidebar.divider()
 st.sidebar.markdown(f"""
-<div style="font-size: 11px; line-height: 1.5; color: #94a3b8;">
-    <strong style="color: #38bdf8; font-size: 12px;">Mateusz Jakubowski</strong><br>
-    <em>{T['author_role']}</em><br><br>
-    📍 Rzeszów, Poland<br>
-    🧬 Master of Experimental Biology<br>
-    🎓 Postgraduate in Clinical Research<br>
-    🔬 15+ Years Clinical Diagnostics<br><br>
-    <strong>Wizytówki & Portfolio:</strong><br>
-    🔗 <a href="https://from-pipette-to-python.ai.studio" target="_blank" style="color: #38bdf8; text-decoration: none;">from-pipette-to-python.ai.studio</a><br>
-    🔗 <a href="https://mateusz-jakubowski.ai.studio" target="_blank" style="color: #38bdf8; text-decoration: none;">mateusz-jakubowski.ai.studio</a><br>
-    💻 <a href="https://github.com/MatthewJakubowski" target="_blank" style="color: #38bdf8; text-decoration: none;">GitHub: @MatthewJakubowski</a><br>
-    📊 <a href="https://www.kaggle.com/matthewjakubowski" target="_blank" style="color: #38bdf8; text-decoration: none;">Kaggle: @matthewjakubowski</a><br>
-    🤗 <a href="https://huggingface.co/matthewjakubowski" target="_blank" style="color: #38bdf8; text-decoration: none;">Hugging Face: @matthewjakubowski</a><br>
-    🍷 <a href="https://www.vivino.com/users/mateusz.jakubowski" target="_blank" style="color: #38bdf8; text-decoration: none;">Vivino Enthusiast Profile</a>
+<div style="font-size: 11px; line-height: 1.6; color: #94a3b8;">
+    <span style="color: #64748b; text-transform: uppercase; font-size: 10px; font-weight: 700;">{T['author_tag']}</span><br>
+    <strong style="color: #f8fafc; font-size: 13px;">Mateusz Jakubowski</strong><br><br>
+    <a href="https://mateusz-jakubowski.ai.studio" target="_blank" class="author-btn">
+        🔗 mateusz-jakubowski.ai.studio ↗
+    </a>
 </div>
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------------------
-# 3. ZARZĄDZANIE STANEM & BAZA DANYCH
+# 3. ZARZĄDZANIE DANYMI
 # -------------------------------------------------------------
 default_labs = {
     "K_POTASSIUM": 4.4, "CA_CALCIUM": 2.38, "H_INDEX": 0.04,
@@ -168,18 +218,17 @@ default_labs = {
     "GLUCOSE": 92.0, "INSULIN": 10.4, "HBA1C": 5.2, "C_PEPTIDE": 1.82,
     "CHOL_TOTAL": 188.0, "HDL": 55.0, "TRIGLYCERIDES": 162.0, "APOB": 84.0, "LPA": 14.0,
     "HS_TROPONIN": 4.2, "NT_PROBNP": 48.0, "D_DIMER": 280.0, "INR": 1.02, "ANTITHROMBIN_III": 104.0,
-    "ALT": 46.0, "AST": 27.0, "ALP": 56.0, "GGTP": 24.0, "BILIRUBIN_TOTAL": 0.72,
-    "CREATININE": 0.94, "CYSTATIN_C": 0.82, "UREA": 32.0, "URIC_ACID": 6.4, "SODIUM": 141.0,
-    "IRON": 112.0, "UIBC": 212.0, "FERRITIN": 145.0, "HS_CRP": 0.48, "HOMOCYSTEINE": 8.4,
-    "TSH": 2.05, "FT4": 1.22, "FT3": 3.25, "ANTI_TPO": 10.4, "TRAB": 0.45, "ANTI_CCP": 1.8,
-    "TESTOSTERONE": 640.0, "SHBG": 35.0, "VIT_D3": 46.5, "PSA_TOTAL": 0.78, "CA125": 12.1
+    "ALT": 46.0, "AST": 27.0, "ALP": 56.0, "GGTP": 24.0,
+    "CREATININE": 0.94, "CYSTATIN_C": 0.82, "UREA": 32.0, "URIC_ACID": 6.4, "IRON": 112.0,
+    "FERRITIN": 145.0, "HS_CRP": 0.48, "HOMOCYSTEINE": 8.4, "TSH": 2.05, "FT4": 1.22, "FT3": 3.25,
+    "ANTI_TPO": 10.4, "TRAB": 0.45, "ANTI_CCP": 1.8, "TESTOSTERONE": 640.0, "SHBG": 35.0,
+    "VIT_D3": 46.5, "PSA_TOTAL": 0.78, "CA125": 12.1
 }
 
-# Wstrzyknięcie profilu scenariusza
-if "Scenariusz B" in scenario_choice or "Scenario B" in scenario_choice:
+if scenario_idx == 1:
     default_labs["K_POTASSIUM"] = 8.4
     default_labs["CA_CALCIUM"] = 0.78
-elif "Scenariusz C" in scenario_choice or "Scenario C" in scenario_choice:
+elif scenario_idx == 2:
     default_labs["H_INDEX"] = 0.68
 
 if "active_labs" not in st.session_state:
@@ -191,29 +240,31 @@ if "active_labs" not in st.session_state:
 st.title(T["title"])
 st.caption(T["subtitle"])
 
-# Baner Autorski w nagłówku
+# Dedykowany, czysty baner autorski w nagłówku
 st.markdown(f"""
 <div class="author-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
         <div>
-            <span style="font-size: 16px; font-weight: 800; color: #38bdf8;">Mateusz Jakubowski</span>
-            <span style="font-size: 12px; color: #94a3b8; margin-left: 8px;">| {T['author_role']}</span>
-            <div style="font-size: 11px; color: #cbd5e1; margin-top: 4px;">{T['author_bio']}</div>
+            <span style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700;">{T['author_tag']}</span>
+            <div style="font-size: 16px; font-weight: 800; color: #f8fafc;">Mateusz Jakubowski</div>
         </div>
-        <div style="font-size: 11px; color: #38bdf8; text-align: right; margin-top: 6px;">
-            <code>#FromPipetteToPython</code> • <code>#BuildInPublic</code>
-        </div>
+        <a href="https://mateusz-jakubowski.ai.studio" target="_blank" class="author-btn">
+            🌐 mateusz-jakubowski.ai.studio &nbsp;↗
+        </a>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Jeśli wybrano edytor wyników, pozwalamy użytkownikowi modyfikować dane
-if view_mode in ["Interaktywny Edytor Badań (Live Lab)", "Interactive Lab Editor (Live Test)"]:
+# Tryb 1: Interaktywny edytor badań
+if view_idx == 1:
     st.subheader(T["edit_header"])
     st.caption(T["edit_caption"])
 
+    col_param = "Parametr" if lang == "PL" else "Biomarker"
+    col_val = "Wartość" if lang == "PL" else "Value"
+
     df_edit = pd.DataFrame([
-        {"Parametr": k, "Wartość": float(v), "Typ": "Numeryczny"}
+        {col_param: k, col_val: float(v)}
         for k, v in st.session_state.active_labs.items()
     ])
     
@@ -221,18 +272,17 @@ if view_mode in ["Interaktywny Edytor Badań (Live Lab)", "Interactive Lab Edito
         df_edit,
         use_container_width=True,
         num_rows="fixed",
-        column_config={"Parametr": st.column_config.TextColumn(disabled=True)}
+        column_config={col_param: st.column_config.TextColumn(disabled=True)}
     )
-    # Aktualizacja stanu
     for _, row in edited_df.iterrows():
-        st.session_state.active_labs[row["Parametr"]] = row["Wartość"]
+        st.session_state.active_labs[row[col_param]] = row[col_val]
 
-# Wykonanie audytu na aktualnych (lub zmodyfikowanych) danych
+# Egzekucja audytu
 pt_info = {"hash": hashlib.sha256(b"PORTFOLIO-SESSION").hexdigest(), "age": 40, "sex": "M"}
-audit = UltimateClinicalAuditor.execute_god_mode_audit(pt_info, st.session_state.active_labs, {})
+audit = UltimateClinicalAuditor.execute_god_mode_audit(pt_info, st.session_state.active_labs, {}, lang=lang)
 pre = audit["preanalytical"]
 
-# Wyświetlenie paska stanu przedanalitycznego
+# Wyświetlenie paska stanu fazy przedanalitycznej
 if pre["passed"]:
     st.success(f"{T['pre_ok']} {pre['reason']}")
 else:
@@ -243,56 +293,43 @@ st.divider()
 if not pre["passed"]:
     st.warning(T["pre_warning"])
 else:
-    if view_mode in ["Dynamiczny Paszport Narządowy", "Dynamic Multi-Organ Passport"]:
-        st.subheader("Dynamiczny Paszport Narządowy (20 Osi / Live)")
+    if view_idx == 0:
+        st.subheader(T["passport_title"])
         for ax in audit["axes"]:
-            with st.expander(f"{ax['icon']} {ax['name']} — Status: {ax['status']}", expanded=False):
+            with st.expander(f"{ax['icon']} {ax['name']} — {ax['status']}", expanded=False):
                 st.info(f"💡 {ax['summary']}")
                 cols = st.columns(4)
                 for i, m in enumerate(ax["markers"]):
                     cols[i % 4].metric(
                         label=m["name"],
                         value=f"{m['cur']} {m['unit']}",
-                        delta=f"Norma: {m['ref']}",
+                        delta=f"Ref: {m['ref']}",
                         delta_color="off"
                     )
 
-    elif view_mode in ["Kliniczny Raport Lekarski (SBAR)", "Physician Clinical SBAR Brief"]:
-        st.subheader("Kliniczny Raport Lekarski (Format SBAR)")
+    elif view_idx == 2:
+        st.subheader(T["sbar_title"])
         st.markdown(f"""
-        **{T['sbar_sit']}** Pacjent {pt_info['age']}L, płeć {pt_info['sex']}. Zgłoszenie na audyt biomarkerowy.  
-        **{T['sbar_bg']}** Wykluczono błędy przedanalityczne (indeksy HIL w normie, brak chelatacji EDTA).  
+        **{T['sbar_sit']}** {T['sbar_sit_text']}  
+        **{T['sbar_bg']}** {T['sbar_bg_text']}  
         **{T['sbar_ass']}**
         """)
         for ax in audit["axes"]:
             st.markdown(f"- **{ax['name']}:** {ax['summary']}")
         st.markdown(f"""
-        **{T['sbar_rec']}** Wyniki zweryfikowane deterministycznie. Brak cech martwicy i ostrych incydentów. Wskazane monitorowanie tolerancji węglowodanów.
+        **{T['sbar_rec']}** {T['sbar_rec_text']}
         """)
 
-    elif view_mode in ["Eksport HL7 FHIR R4 Bundle", "HL7 FHIR R4 Bundle Export"]:
+    elif view_idx == 3:
         st.subheader("HL7 FHIR R4 Transaction Bundle")
         fhir_res = FullFHIRBundleExporter.export(audit)
         st.json(fhir_res)
 
-    elif view_mode in ["Certyfikat Zgodności & Nadzór Prawny", "Regulatory Compliance & Governance"]:
-        st.subheader(T["legal_title"])
-        st.markdown("""
-        ### Status Badawczy & Klasyfikacja Systemu (Proof-of-Concept)
-        Platforma `LabAgent-Omni Core` stanowi eksperymentalne środowisko badawczo-rozwojowe (**Proof-of-Concept**).
+    elif view_idx == 4:
+        st.subheader(T["legal_header"])
+        st.markdown(T["legal_body"])
 
-        #### Zgodność Regulacyjna:
-        1. **Ustawa z dnia 15 września 2022 r. o medycynie laboratoryjnej (Dz.U. 2022 poz. 2280):** 
-           System nie dokonuje samodzielnej autoryzacji wyników. Wyłączne prawo do autoryzacji przysługuje uprawnionemu **diagnoście laboratoryjnemu**.
-        2. **Ustawa o zawodach lekarza i lekarza dentysty:**
-           Wszelkie zestawienia i wskaźniki pełnią rolę Clinical Decision Support (CDS). Decyzję terapeutyczną podejmuje wyłącznie **lekarz prowadzący**.
-        3. **Rozporządzenie EU AI Act (2024/1689):**
-           Zasada **Human-in-the-loop (HITL)**, pełna wyjaśnialność (XAI) oraz brak niekontrolowanych decyzji autonomicznych.
-        4. **ICH GCP & PN-EN ISO 15189:2023:**
-           Pełna audytowalność każdej reguły, nienaruszalność danych i deterministyczna weryfikacja błędów przedanalitycznych.
-        """)
-
-# Stopka: Żelazny Disclaimer na dole strony
+# Stopka: Żelazny Disclaimer prawny
 st.markdown(f"""
 <div class="legal-box">
     {T['legal_shield_text']}
