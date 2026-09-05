@@ -92,8 +92,8 @@ TRANSLATIONS = {
         "sbar_sit_text": "Pacjent 40L, płeć M. Rutynowy kompleksowy panel biochemiczno-hematologiczny.",
         "sbar_bg_text": "Wykluczono interferencje przedanalityczne (indeksy HIL w normie, brak chelatacji EDTA).",
         "sbar_rec_text": "Wyniki zweryfikowane deterministycznie. Brak cech martwicy narządowej. Zalecana dalsza obserwacja dynamiki metabolizmu węglowodanowego.",
-        "edit_header": "Interaktywna Modyfikacja Wyników Badań (Weryfikacja w locie)",
-        "edit_caption": "Zmień dowolną wartość w tabeli poniżej – silnik natychmiast przeliczy audyt, odcięcia i reguły kliniczne.",
+        "edit_header": "Interaktywny Edytor Badań Laboratoryjnych (Pełny Panel >80 Analitów)",
+        "edit_caption": "Zmień dowolną wartość w tabeli poniżej – silnik natychmiast przeliczy audyt, formuły wieloosiowe i reguły autowalizacji.",
         "author_tag": "Architektura & Rozwój:",
         "legal_header": "Formalne Ramy Prawne, Certyfikacja & Nadzór Regulacyjny",
         "legal_body": """
@@ -147,7 +147,7 @@ TRANSLATIONS = {
         "sbar_sit_text": "Patient 40y, male. Comprehensive routine biochemical and hematological evaluation.",
         "sbar_bg_text": "Preanalytical interferences excluded (HIL indices optimal, EDTA cation chelation ruled out).",
         "sbar_rec_text": "Deterministically verified results. No evidence of acute cell necrosis. Continuous observation of glucose metabolism trajectory advised.",
-        "edit_header": "Interactive Lab Value Modification (Real-Time Verification)",
+        "edit_header": "Interactive Laboratory Test Editor (Full Scope >80 Analytes)",
         "edit_caption": "Modify any biomarker in the table below – the deterministic engine will immediately re-evaluate autovalidation rules.",
         "author_tag": "Architecture & Engineering:",
         "legal_header": "Statutory Governance, Certification & Legal Shield",
@@ -204,22 +204,69 @@ EN_STATUS_MAP = {
 }
 
 # -------------------------------------------------------------
-# 2. DEFINICJE BAZOWE SCENARIUSZY
+# 2. DEFINICJE BAZOWE SCENARIUSZY (PEŁNY PANEL >80 ANALITÓW)
 # -------------------------------------------------------------
 def get_scenario_data(idx: int) -> dict:
     base = {
-        "K_POTASSIUM": 4.4, "CA_CALCIUM": 2.38, "H_INDEX": 0.04,
-        "WBC": 5.8, "HGB": 15.6, "MCV": 88.4, "RDW_CV": 12.1, "PLT": 242.0, "RET_PCT": 1.21, "RET_HE": 33.5, "ESR": 6.0,
-        "BLOOD_PH": 7.41, "PCO2": 39.5, "PO2": 94.0, "LACTATE": 1.1,
+        # Faza Przedanalityczna (Indeksy HIL)
+        "H_INDEX": 0.04, "I_INDEX": 0.02, "L_INDEX": 0.01,
+        
+        # Oś 1: Hematologia & Retikulocyty
+        "WBC": 5.8, "RBC": 5.12, "HGB": 15.6, "HCT": 45.2, "MCV": 88.4, 
+        "MCH": 30.5, "MCHC": 34.5, "RDW_CV": 12.1, "PLT": 242.0, "MPV": 9.8,
+        "NEUT_ABS": 3.4, "LYM_ABS": 1.9, "MONO_ABS": 0.42, "EOS_ABS": 0.12, "BASO_ABS": 0.03,
+        "RET_ABS": 62.0, "RET_PCT": 1.21, "IRF": 0.08, "RET_HE": 33.5, "ESR": 6.0,
+        
+        # Oś 2: Gazometria & Mleczany
+        "BLOOD_PH": 7.41, "PCO2": 39.5, "PO2": 94.0, "HCO3_ACT": 24.2, "BASE_EXCESS": 0.2, "LACTATE": 1.1,
+        
+        # Oś 3: Metabolizm & Insulinooporność
         "GLUCOSE": 92.0, "INSULIN": 10.4, "HBA1C": 5.2, "C_PEPTIDE": 1.82,
+        
+        # Oś 4: Lipidologia & Aterogenność
         "CHOL_TOTAL": 188.0, "HDL": 55.0, "TRIGLYCERIDES": 162.0, "APOB": 84.0, "LPA": 14.0,
-        "HS_TROPONIN": 4.2, "NT_PROBNP": 48.0, "D_DIMER": 280.0, "INR": 1.02, "ANTITHROMBIN_III": 104.0,
-        "ALT": 46.0, "AST": 27.0, "ALP": 56.0, "GGTP": 24.0,
-        "CREATININE": 0.94, "CYSTATIN_C": 0.82, "UREA": 32.0, "URIC_ACID": 6.4, "IRON": 112.0,
-        "FERRITIN": 145.0, "HS_CRP": 0.48, "HOMOCYSTEINE": 8.4, "TSH": 2.05, "FT4": 1.22, "FT3": 3.25,
-        "ANTI_TPO": 10.4, "TRAB": 0.45, "ANTI_CCP": 1.8, "TESTOSTERONE": 640.0, "SHBG": 35.0,
-        "VIT_D3": 46.5, "PSA_TOTAL": 0.78, "CA125": 12.1
+        
+        # Oś 5: Kardiologia CITO & Koagulologia
+        "HS_TROPONIN": 4.2, "NT_PROBNP": 48.0, "CKMB_MASS": 1.8,
+        "INR": 1.02, "PT_SEC": 11.2, "APTT": 28.4, "D_DIMER": 280.0, 
+        "ANTITHROMBIN_III": 104.0, "PROTEIN_C": 110.0, "PROTEIN_S": 98.0,
+        
+        # Oś 6: Wątroba & Przewód Pokarmowy
+        "ALT": 46.0, "AST": 27.0, "ALP": 56.0, "GGTP": 24.0, "BILIRUBIN_TOTAL": 0.72,
+        "LIPASE": 28.0, "AMYLASE_SERUM": 54.0, "CALPROTECTIN": 18.0,
+        
+        # Oś 7: Nerki & Elektrolity
+        "CREATININE": 0.94, "CYSTATIN_C": 0.82, "UREA": 32.0, "URIC_ACID": 6.4,
+        "SODIUM": 141.0, "K_POTASSIUM": 4.4, "CA_CALCIUM": 2.38,
+        
+        # Oś 8: Żelazo, Białka & Zapalenie
+        "IRON": 112.0, "UIBC": 212.0, "FERRITIN": 145.0, "TRANSFERRIN": 2.45,
+        "HAPTOGLOBIN": 1.15, "CERULOPLASMIN": 28.0, "COMPLEMENT_C3": 1.18, "COMPLEMENT_C4": 0.24,
+        "PCT_PROCALCITONIN": 0.02, "HS_CRP": 0.48, "HOMOCYSTEINE": 8.4,
+        
+        # Oś 9: Witaminy & Endokrynologia Tarczycy
+        "VIT_D3": 46.5, "VIT_B12": 420.0, "FOLATE": 8.8,
+        "TSH": 2.05, "FT4": 1.22, "FT3": 3.25, "IPTH_INTACT": 32.0,
+        
+        # Oś 10: Steroidy & Przysadka
+        "TESTOSTERONE": 640.0, "SHBG": 35.0, "LH": 4.2, "FSH": 3.8, "PROLACTIN": 9.2, 
+        "DHEA_SO4": 260.0, "IGF1": 175.0,
+        
+        # Oś 11: Autoimmunologia Specjalistyczna
+        "ANTI_TPO": 10.4, "ANTI_TG": 12.0, "TRAB": 0.45, "ANTI_CCP": 1.8, "RF_IGM": 8.0,
+        
+        # Oś 12: Immunoglobuliny
+        "IGG": 10.5, "IGA": 2.1, "IGM": 1.1, "IGE_TOTAL": 35.0,
+        
+        # Oś 13: Onkomarkery Narządowe
+        "PSA_TOTAL": 0.78, "PSA_FREE": 0.22, "CEA": 1.4, "CA125": 12.1, 
+        "CA15_3": 14.2, "CA19_9": 8.5, "AFP": 2.8, "CHROMOGRANIN_A": 48.0,
+        
+        # Oś 14: Serologia Zakaźna & Mocz
+        "AHBS_TITER": 240.0, "URINE_SG": 1.020, "URINE_PH": 6.0
     }
+    
+    # Modyfikatory interferencyjne
     if idx == 1:
         base["K_POTASSIUM"] = 8.4
         base["CA_CALCIUM"] = 0.78
@@ -228,6 +275,7 @@ def get_scenario_data(idx: int) -> dict:
         base["K_POTASSIUM"] = 4.4
         base["CA_CALCIUM"] = 2.38
         base["H_INDEX"] = 0.68
+        
     return base
 
 # -------------------------------------------------------------
@@ -263,9 +311,8 @@ st.sidebar.markdown(f"""
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------------------
-# 4. DETERMINISTYCZNA KONTROLA STANU
+# 4. DETERMINISTYCZNA KONTROLA STANU SESJI
 # -------------------------------------------------------------
-# Jeśli użytkownik zmienił scenariusz w selectboxie -> przeładuj dane
 if "current_scenario_idx" not in st.session_state or st.session_state.current_scenario_idx != scenario_idx:
     st.session_state.current_scenario_idx = scenario_idx
     st.session_state.active_labs = get_scenario_data(scenario_idx)
@@ -293,7 +340,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Tryb 1: Interaktywny edytor
+# Tryb 1: Interaktywny edytor badań (>80 biomarkerów)
 if view_idx == 1:
     st.subheader(T["edit_header"])
     st.caption(T["edit_caption"])
@@ -316,7 +363,7 @@ if view_idx == 1:
     for _, row in edited_df.iterrows():
         st.session_state.active_labs[row[col_param]] = row[col_val]
 
-# Wykonanie audytu
+# Wykonanie deterministycznego audytu laboratoryjnego
 pt_info = {"hash": hashlib.sha256(b"PORTFOLIO-SESSION").hexdigest(), "age": 40, "sex": "M"}
 audit = UltimateClinicalAuditor.execute_god_mode_audit(pt_info, st.session_state.active_labs, {})
 pre = audit["preanalytical"]
@@ -382,6 +429,7 @@ else:
         st.subheader(T["legal_header"])
         st.markdown(T["legal_body"])
 
+# Stopka: Żelazny Disclaimer prawny
 st.markdown(f"""
 <div class="legal-box">
     {T['legal_shield_text']}
