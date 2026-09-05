@@ -89,13 +89,12 @@ TRANSLATIONS = {
         "sbar_bg": "B (Kontekst):",
         "sbar_ass": "A (Ocena):",
         "sbar_rec": "R (Rekomendacja):",
-        "sbar_sit_text": "Pacjent 40L, płeć M. Kompleksowy panel biochemiczno-hematologiczny.",
+        "sbar_sit_text": "Pacjent 40L, płeć M. Rutynowy kompleksowy panel biochemiczno-hematologiczny.",
         "sbar_bg_text": "Wykluczono interferencje przedanalityczne (indeksy HIL w normie, brak chelatacji EDTA).",
-        "sbar_rec_text": "Wyniki zweryfikowane deterministycznie. Brak ostrych incydentów martwiczych. Zalecana dalsza obserwacja dynamiki metabolizmu węglowodanowego.",
+        "sbar_rec_text": "Wyniki zweryfikowane deterministycznie. Brak cech martwicy narządowej. Zalecana dalsza obserwacja dynamiki metabolizmu węglowodanowego.",
         "edit_header": "Interaktywna Modyfikacja Wyników Badań (Weryfikacja w locie)",
         "edit_caption": "Zmień dowolną wartość w tabeli poniżej – silnik natychmiast przeliczy audyt, odcięcia i reguły kliniczne.",
         "author_tag": "Architektura & Rozwój:",
-        "author_btn_text": "Zobacz profil & dossier ↗",
         "legal_header": "Formalne Ramy Prawne, Certyfikacja & Nadzór Regulacyjny",
         "legal_body": """
         ### Status Badawczy & Klasyfikacja Systemu (Proof-of-Concept)
@@ -147,11 +146,10 @@ TRANSLATIONS = {
         "sbar_rec": "R (Recommendation):",
         "sbar_sit_text": "Patient 40y, male. Comprehensive routine biochemical and hematological evaluation.",
         "sbar_bg_text": "Preanalytical interferences excluded (HIL indices optimal, EDTA cation chelation ruled out).",
-        "sbar_rec_text": "Deterministially verified results. No evidence of acute cell necrosis. Continuous observation of glucose metabolism trajectory advised.",
+        "sbar_rec_text": "Deterministically verified results. No evidence of acute cell necrosis. Continuous observation of glucose metabolism trajectory advised.",
         "edit_header": "Interactive Lab Value Modification (Real-Time Verification)",
         "edit_caption": "Modify any biomarker in the table below – the deterministic engine will immediately re-evaluate autovalidation rules.",
         "author_tag": "Architecture & Engineering:",
-        "author_btn_text": "Visit Profile & Dossier ↗",
         "legal_header": "Statutory Governance, Certification & Legal Shield",
         "legal_body": """
         ### Research & Proof-of-Concept Status
@@ -178,7 +176,38 @@ TRANSLATIONS = {
 }
 
 # -------------------------------------------------------------
-# 2. PANEL BOCZNY (KONTROLA & LINK DO STRONY)
+# 2. MAPOWANIE NAZW DLA JĘZYKA ANGIELSKIEGO
+# -------------------------------------------------------------
+EN_AXIS_MAP = {
+    "Oś Hematologiczna & Retikulocyty": "Hematology & Reticulocyte Axis",
+    "Oś Równowagi Kwasowo-Zasadowej & Mleczany": "Acid-Base Balance & Lactate",
+    "Oś Metaboliczna & Wrażliwość Insulinowa": "Metabolic & Insulin Sensitivity Axis",
+    "Oś Lipidowa, Aterogenność & Lp(a)": "Lipid, Atherogenicity & Lp(a) Axis",
+    "Oś Kardiologii CITO & Trombofilii": "Critical Cardiology & Thrombophilia",
+    "Oś Wątrobowo-Żółciowa & Cytoprotekcja": "Hepatobiliary Cytoprotection Axis",
+    "Oś Nerkowa, Cystatyna C & Elektrolity": "Renal Axis, Cystatin C & Electrolytes",
+    "Gospodarka Żelazem, Metylacja & hs-CRP": "Iron Metabolism, Methylation & hs-CRP",
+    "Oś Tarczycowa & Autoprzeciwciała (A-TPO, TRAb, A-CCP)": "Thyroid & Autoantibodies (A-TPO, TRAb, A-CCP)",
+    "Steroidy, Witaminy & Nadzór Onkologiczny": "Steroids, Vitamins & Tumor Markers"
+}
+
+EN_STATUS_MAP = {
+    "PRAWIDŁOWA ERYTROPOEZA": "NORMAL ERYTHROPOIESIS",
+    "HOMEOSTAZA KWASOWO-ZASADOWA": "ACID-BASE HOMEOSTASIS",
+    "SUBKLINICZNA ATENCJA": "SUBCLINICAL ATTENTION",
+    "OPTYMALNA": "OPTIMAL",
+    "OPTYMALNY APOB": "OPTIMAL APOB TARGET",
+    "BRAK NIEDOKRWIENIA & ZAKRZEPICY": "RULE-OUT ACS & THROMBOSIS",
+    "ODCZYN ADAPTACYJNY": "EXERCISE ADAPTATION",
+    "NORMA CYTOLITYCZNA": "NORMAL CYTOLYSIS",
+    "FILTRACJA PRAWIDŁOWA (G1)": "NORMAL FILTRATION (G1)",
+    "OPTYMALNA HOMEOSTAZA": "OPTIMAL HOMEOSTASIS",
+    "EUTYREOZA / SERONEGATYWNOŚĆ": "EUTHYROID / SERONEGATIVE",
+    "EUGONADYZM & STĘŻENIA FIZJOLOGICZNE": "EUGONADISM & PHYSIOLOGICAL LEVELS"
+}
+
+# -------------------------------------------------------------
+# 3. PANEL BOCZNY (KONTROLA & LINK)
 # -------------------------------------------------------------
 lang = st.sidebar.radio("🌐 Language / Język", ["PL", "EN"], horizontal=True)
 T = TRANSLATIONS[lang]
@@ -196,7 +225,6 @@ view_idx = st.sidebar.radio(
     format_func=lambda i: T["views"][i]
 )
 
-# Czysta wizytówka w sidebarze odsyłająca na stronę główną
 st.sidebar.divider()
 st.sidebar.markdown(f"""
 <div style="font-size: 11px; line-height: 1.6; color: #94a3b8;">
@@ -209,7 +237,7 @@ st.sidebar.markdown(f"""
 """, unsafe_allow_html=True)
 
 # -------------------------------------------------------------
-# 3. ZARZĄDZANIE DANYMI
+# 4. DANE WEJŚCIOWE
 # -------------------------------------------------------------
 default_labs = {
     "K_POTASSIUM": 4.4, "CA_CALCIUM": 2.38, "H_INDEX": 0.04,
@@ -235,12 +263,11 @@ if "active_labs" not in st.session_state:
     st.session_state.active_labs = default_labs.copy()
 
 # -------------------------------------------------------------
-# 4. GŁÓWNY WIDOK APLIKACJI
+# 5. WIDOK GŁÓWNY
 # -------------------------------------------------------------
 st.title(T["title"])
 st.caption(T["subtitle"])
 
-# Dedykowany, czysty baner autorski w nagłówku
 st.markdown(f"""
 <div class="author-card">
     <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
@@ -255,7 +282,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Tryb 1: Interaktywny edytor badań
+# Tryb 1: Interaktywny edytor
 if view_idx == 1:
     st.subheader(T["edit_header"])
     st.caption(T["edit_caption"])
@@ -277,16 +304,26 @@ if view_idx == 1:
     for _, row in edited_df.iterrows():
         st.session_state.active_labs[row[col_param]] = row[col_val]
 
-# Egzekucja audytu
+# Bezpieczne wywołanie silnika (zgodne z oryginalną sygnaturą)
 pt_info = {"hash": hashlib.sha256(b"PORTFOLIO-SESSION").hexdigest(), "age": 40, "sex": "M"}
-audit = UltimateClinicalAuditor.execute_god_mode_audit(pt_info, st.session_state.active_labs, {}, lang=lang)
+audit = UltimateClinicalAuditor.execute_god_mode_audit(pt_info, st.session_state.active_labs, {})
 pre = audit["preanalytical"]
 
-# Wyświetlenie paska stanu fazy przedanalitycznej
-if pre["passed"]:
-    st.success(f"{T['pre_ok']} {pre['reason']}")
+# Tłumaczenie statusu przedanalitycznego dla EN
+if lang == "EN":
+    if pre["passed"]:
+        pre_reason_display = "ISO 15189 Certificate: Specimen integrity verified. Free of EDTA chelation and hemolysis."
+    elif pre["status"] == "REJECT_EDTA":
+        pre_reason_display = "CRITICAL BLOCK: Severe EDTA cation chelation detected. Results held."
+    else:
+        pre_reason_display = "REJECTION: Allowable hemolysis interference index exceeded."
 else:
-    st.error(f"{T['pre_block']} {pre['reason']}")
+    pre_reason_display = pre["reason"]
+
+if pre["passed"]:
+    st.success(f"{T['pre_ok']} {pre_reason_display}")
+else:
+    st.error(f"{T['pre_block']} {pre_reason_display}")
 
 st.divider()
 
@@ -296,7 +333,10 @@ else:
     if view_idx == 0:
         st.subheader(T["passport_title"])
         for ax in audit["axes"]:
-            with st.expander(f"{ax['icon']} {ax['name']} — {ax['status']}", expanded=False):
+            axis_name = EN_AXIS_MAP.get(ax["name"], ax["name"]) if lang == "EN" else ax["name"]
+            axis_status = EN_STATUS_MAP.get(ax["status"], ax["status"]) if lang == "EN" else ax["status"]
+            
+            with st.expander(f"{ax['icon']} {axis_name} — {axis_status}", expanded=False):
                 st.info(f"💡 {ax['summary']}")
                 cols = st.columns(4)
                 for i, m in enumerate(ax["markers"]):
@@ -315,7 +355,8 @@ else:
         **{T['sbar_ass']}**
         """)
         for ax in audit["axes"]:
-            st.markdown(f"- **{ax['name']}:** {ax['summary']}")
+            axis_name = EN_AXIS_MAP.get(ax["name"], ax["name"]) if lang == "EN" else ax["name"]
+            st.markdown(f"- **{axis_name}:** {ax['summary']}")
         st.markdown(f"""
         **{T['sbar_rec']}** {T['sbar_rec_text']}
         """)
@@ -329,7 +370,6 @@ else:
         st.subheader(T["legal_header"])
         st.markdown(T["legal_body"])
 
-# Stopka: Żelazny Disclaimer prawny
 st.markdown(f"""
 <div class="legal-box">
     {T['legal_shield_text']}
